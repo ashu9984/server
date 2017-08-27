@@ -30,9 +30,10 @@ todoRoutes.post('/createTodo', function(req, res) {
     })
     newTodo.save(function(err, data) {
       if (err) {
-        res.status(500).json({
-          success: false,
-          msg: "Database error"
+//         res.status(500).json({
+//           success: false,
+//           msg: "Database error"
+        next(err)
         })
       } else {
         res.json({
@@ -47,10 +48,11 @@ todoRoutes.post('/createTodo', function(req, res) {
 
 todoRoutes.get('/todo', function(req, res) {
   todo.find({ email: req.decoded._doc.email }, { email: 0 }, function(err, data) {
-    if (err) res.status(500).json({
-      success: false,
-      msg: "Database error"
-    })
+     if (err) next(err)
+//        res.status(500).json({
+//       success: false,
+//       msg: "Database error"
+//     })
 
     else {
       res.json({
@@ -79,10 +81,11 @@ todoRoutes.post('/checkTodo', function(req, res) {
         data.status = 'done'
         data.completed_date = new Date()
         data.save(function(err, newData) {
-          if (err) res.status(500).json({
-            success: false,
-            msg: "Database error"
-          })
+          if (err) next(err)
+//             res.status(500).json({
+//             success: false,
+//             msg: "Database error"
+//           })
           else {
             res.json({
               success: true,
@@ -94,5 +97,9 @@ todoRoutes.post('/checkTodo', function(req, res) {
     })
   }
 })
+todoRoutes.use(err,req,res,next){
+  res.status(500);
+   res.send("Oops, something went wrong.")
+}
 
 module.exports = todoRoutes
