@@ -34,7 +34,7 @@ todoRoutes.post('/createTodo', function(req, res) {
 //           success: false,
 //           msg: "Database error"
         next(err)
-        })
+        
       } else {
         res.json({
           success: true,
@@ -97,9 +97,9 @@ todoRoutes.post('/checkTodo', function(req, res) {
     })
   }
 })
-todoRoutes.use(err,req,res,next){
+todoRoutes.use(function(err,req,res,next){
   res.status(500);
    res.send("Oops, something went wrong.")
-}
+})
 
 module.exports = todoRoutes
